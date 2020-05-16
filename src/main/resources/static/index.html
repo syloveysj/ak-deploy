@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>C2-Vue</title>
+  <link rel="stylesheet" href="assets/css/element.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="assets/css/element-custom.css">
+</head>
+<body>
+<div id="app">
+	<el-container>
+	  <el-header class="page-header">
+      	<a  href="/">
+			<span>医疗平台</span>
+		</a> 
+
+      <div class="header-user">
+      		<div class="header-menus">
+      			 <div v-for="(item,i) in myTopMenusData" :key="i" :class="item.isSelect?'header-menus-btn-select':''" class="header-menus-btn" @click="topClick(item)">
+      			 	<el-tooltip class="item" effect="dark" :content="item.name" placement="bottom">
+				      <i :class="item.icon"></i>
+				    </el-tooltip>
+      			 </div>
+      			 <div class="header-menus-btn-more" @click="headerUserDropdownMenuCommand('more')">
+      			 	<el-tooltip class="item" effect="dark" content="更多" placement="bottom">
+				      <i class="el-icon-more"></i>
+				    </el-tooltip>
+      			 </div>
+      		</div>
+        	<!-- 顶部功能栏 -->
+			<div class="header-tools">
+				<el-badge is-dot class="header-tool-badge"> <el-button
+					circle icon="el-icon-s-platform" type="primary"></el-button> </el-badge>
+				<el-badge is-dot class="header-tool-badge"> <el-button
+					circle icon="el-icon-message-solid" type="primary"></el-button> </el-badge>
+				<!-- <el-badge is-dot class="header-tool-badge"> <el-button
+					circle icon="el-icon-chat-dot-round" type="primary"></el-button> </el-badge> -->
+			</div>
+			<!-- 用户信息 -->
+			<div class="float-l">
+				<el-avatar src="assets/img/user.png" size="small"></el-avatar>
+				<el-dropdown size="mini" @command="headerUserDropdownMenuCommand">
+					<span class="el-dropdown-link" >
+						{{loginInfo.realname}}，欢迎您！ <i class="el-icon-arrow-down"></i>
+					</span>
+				<el-dropdown-menu slot="dropdown" > 
+					<el-dropdown-item  icon="el-icon-user-solid" command="baseInfo">个人信息</el-dropdown-item> 
+				    <el-dropdown-item  icon="el-icon-warning" command="updatePWD">密码修改</el-dropdown-item> 
+					<el-dropdown-item icon="el-icon-error" command="logout">退出登录</el-dropdown-item> 
+				</el-dropdown-menu> </el-dropdown>
+			</div>
+      </div>
+
+    </el-header>
+	  <el-container class="page-container"  >
+			<el-aside width="200px"> 
+				<el-header class="header-menu" >
+					<div class="header-menu-lump-w">
+						<el-tooltip class="item" effect="dark" :content="contentText" placement="top">					
+						<el-button class="header-menu-btn"  :icon="isMinMenu?'el-icon-d-arrow-right':'el-icon-d-arrow-left'" @click="toggleSideBar">		      						    			
+						</el-button>
+						</el-tooltip>
+					</div>
+					<div class="header-menu-lump" >
+						<el-tooltip class="item" effect="dark" content="点击搜索" placement="right">
+						 <el-input placeholder="请输入内容" v-model="menuSearch"   class="header-menu-input" :ref="'searchTagInput'" :class="{'paddingSize':isMinMenu}"> 
+						 	<i @click="showtabMenu" slot="prefix" class="el-input__icon el-icon-search " :class="{'icon-handler':isMinMenu}"></i>
+						 </el-input>
+						 </el-tooltip>
+						 <div v-show="isShowSearchTree" class="searchShowView">
+						 	<el-input v-show="isMinMenu" placeholder="请输入内容"  v-model="menuSearchInput" value="menuSearchInput"  class="search-input"> </el-input>
+						 	<el-tree
+					          :data="menus"
+					          accordion
+					          node-key="'search-key'"
+					          ref="searchTree"
+					          :props="defaultProps"
+					          :filter-node-method="filterNode"
+					          @node-click="handleNodeClick"
+					        >
+					        <span slot-scope="{ node, data }">
+								<i :class="data.icon"></i>
+							<span style="padding-left: 4px;">{{data.name}}</span>
+							 </span>
+					        </el-tree>
+						 </div>
+					</div>
+					<el-menu 
+						default-active="/home"
+						:collapse="isCollapse"
+						:collapse-transition="false" 
+						:unique-opened="true"
+						background-color="#ffffff" 
+						text-color="#606266"
+						active-text-color="#fff" 
+						router> 
+							<div  v-for="menu of menus" :key="menu.id">
+									<el-collapse v-if="menu.children!=undefined && menu.children.length>0"  v-if="!isMinMenu" v-model="activeNames" accordion class="collapse-menu"  :class="{'collapse-menu-display':isToggleSideBar}" @change="selectMenuType">
+											<template  :style="{height:menuHeightVal}"> 
+													  <el-collapse-item   :name="menu.id" :id="menu.id" class="collapse-menu-item"  :class="activeNames==menu.id?'collapse-item-change':''">
+													    <template slot="title">
+													    <i :class="{[menu.icon]:true}"></i>
+													      	<div> {{menu.name}}</div> 
+													    </template>
+													    <el-tree
+													     
+														  :data="menu.children"
+														  :props="defaultProps"
+														  node-key="'menu-key'"
+														  accordion
+														  @node-click="handleNodeClick">
+														  <span slot-scope="{ node, data }">
+																<i :class="data.icon"></i>
+														  <span style="padding-left: 4px;">{{data.name}}</span>
+														  </span>
+														</el-tree>
+													  </el-collapse-item>
+											</template> 
+									</el-collapse>
+								<div v-else>
+									<el-menu-item :index="menu.path" v-if="menu.path" class="one-menu-item" :class="{'collapse-menu-display':isToggleSideBar}" @click="selectMenuType"> 
+										<i :class="{[menu.icon]:true}"></i> 
+										<span slot="title">{{menu.name}}</span>
+									</el-menu-item> 
+									
+								</div>
+							</div>
+							
+							<!-- minMenu -->
+							<template v-if="isMinMenu" > 
+								<yl-menu-item :menus="menus" />
+								<!-- <el-submenu v-if="menu.children!=undefined && menu.children.length>0"  class="min-menu-item" :index="menu.id" v-if="menu.children && menu.children.length>0" v-bind:key="menu.id" >
+									<template slot="title"> 
+										<i :class="{[menu.icon]:true}"></i>
+										<span>{{menu.name}}</span> 
+									</template> 
+									<el-menu-item :index="sm.path" v-for="sm of menu.children" v-bind:key="sm.id">{{sm.name}}</el-menu-item>
+								</el-submenu> 
+								<el-menu-item v-else  :index="menu.path" v-if="menu.path" v-bind:key="'min'+menu.id" class="min-menu-item"> 
+									<i :class="{[menu.icon]:true}"></i> 
+									<span slot="title">{{menu.name}}</span>
+								</el-menu-item>  -->
+							</template>   
+					</el-menu> 
+					 
+				</el-header>
+			</el-aside> 
+
+	    <el-container  >
+	      <el-main class="content-main">
+			      <div class="c2-tab-container tags-view-container">
+		            <c2-tab ref="c2tab" :home-deploy="homeDeploy||{}"/>
+		          </div>
+		 
+		          <div id="view">
+					  <keep-alive :include="c2IncludesNames">
+		                <router-view :key="c2ActiveViewKey" />
+		              </keep-alive>
+		              <c2-iframe-component v-show="$route.path.startsWith('/i/')" />
+				</div>
+	      </el-main>
+		  <el-footer><span>技术支持：湖南科创信息技术股份有限公司</span></el-footer> 
+	    </el-container>
+	  </el-container>
+	  <!-- 收藏页面菜单功能 -->
+	  		
+	  		<el-drawer
+			  :visible.sync="isSettingMenu"
+			  direction="ttb"
+			  :destroy-on-close="isDestory"
+			  custom-class="custom-drawer"
+			  :modal=false
+			  >
+			  <menu-items :key="menuItemsKey" :visible.sync="isSettingMenu" @handler-click="topClick" refs="menuItems" :select-menus.sync="myTopMenusData" :user-info="portalData" :all-menus="TopMenusData"/>
+			</el-drawer>
+			<el-dialog title="修改密码" :visible.sync="isPwd" top="33vh" custom-class="updatePwd" :destroy-on-close="isDestory" >
+				<user-pwd :visible.sync="isPwd" :user-info="portalData" ></user-pwd>
+			</el-dialog>
+			<el-dialog title="个人信息" :visible.sync="isBaseInfo"  >
+				<user-info :visible.sync="isBaseInfo"></user-info>
+			</el-dialog>
+	</el-container>
+	
+</div>
+
+	<script src="assets/js/vue.min.js"></script>
+	<script src="assets/js/vue-router.js"></script>
+	<script src="assets/js/element.js"></script>
+	<script src="global.js"></script>
+	<script src="assets/js/moment.js"></script>
+	<script src="assets/js/axios.min.js"></script>
+	<script src="assets/js/Sortable.min.js"></script>
+	<script src="assets/js/vuedraggable.umd.min.js"></script>
+
+	<script src="indexApi.js"></script>
+
+	<script src="c2tab.js"></script>
+    <script src="c2globalmenu.js"></script>
+    <script src="c2globalbread.js"></script>
+    <script src="c2IframeComponent.js"></script>
+	<script src="c2vue.js"></script>
+	<script src="index.js"></script>
+	<script src="component/hsop-components.js"></script>
+	<script src="ui/dir/components.js"></script>
+	<script src="assets/js/echarts.min.js"></script>
+</body>
+</html>

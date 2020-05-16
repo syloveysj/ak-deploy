@@ -1,0 +1,224 @@
+body {
+  margin: 0;
+}
+
+.page-header {
+  line-height: 60px;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+}
+
+#logo {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#logo img {
+  vertical-align: middle;
+  margin: 0 6px 0 12px;
+  height: 40px;
+}
+
+.page-header .header-user {
+  float: right;
+}
+
+.page-header .header-user .el-avatar {
+  position: relative;
+  top: 12px;
+}
+
+.page-container {
+  height: calc(100vh - 60px);
+  background-color: #f0f2f5;
+}
+
+/* 左侧菜单样式 */
+.page-container .el-aside {
+  background-color: #fff;
+  border-right: 1px solid #e6e6e6;
+  transition: all .3s;
+}
+
+.page-container .el-aside .el-menu {
+  border-right: none;
+}
+
+.page-container .el-aside .c2-menu-sider-trigger {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-top: 1px solid #e6e6e6;
+}
+
+.el-menu--collapse .el-menu-item span,
+.el-menu--collapse .el-submenu .el-submenu__title span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  display: inline-block;
+}
+
+.el-menu--collapse .el-menu-item .el-submenu__icon-arrow,
+.el-menu--collapse .el-submenu>.el-submenu__title .el-submenu__icon-arrow {
+  display: none;
+}
+/* 左侧菜单样式 */
+
+.el-card {
+  margin-bottom: 12px;
+}
+
+/* 面包屑样式 */
+.page-breadcrumb {
+  background-color: #fff;
+  height: 48px;
+  margin: -20px -20px 20px;
+  padding: 0 20px;
+}
+
+.page-breadcrumb .el-breadcrumb {
+  line-height: 48px;
+}
+
+.page-breadcrumb .el-breadcrumb .breadcrumb-home {
+  cursor: pointer;
+}
+
+.page-breadcrumb .el-breadcrumb .breadcrumb-home .el-breadcrumb__inner {
+  font-weight: 600;
+}
+
+/* 面包屑样式 */
+
+/* tabs样式 */
+.scroll-container {
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.scroll-container .el-scrollbar__bar {
+  bottom: 0px;
+}
+
+.scroll-container .el-scrollbar__wrap {
+  height: 49px;
+}
+
+.tags-view-container {
+  height: 34px;
+  background: #fff;
+  border-bottom: 1px solid #d8dce5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  height: 26px;
+  line-height: 26px;
+  border: 1px solid #d8dce5;
+  color: #495060;
+  background: #fff;
+  padding: 0 8px;
+  font-size: 12px;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item:first-of-type {
+  margin-left: 15px;
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item:last-of-type {
+  margin-right: 15px;
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item.active {
+  background-color: #42b983;
+  color: #fff;
+  border-color: #42b983;
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item.active::before {
+  content: "";
+  background: #fff;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 2px;
+}
+
+.tags-view-container .contextmenu {
+  margin: 0;
+  background: #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.tags-view-container .contextmenu li {
+  margin: 0;
+  padding: 7px 16px;
+  cursor: pointer;
+}
+
+.tags-view-container .contextmenu li:hover {
+  background: #eee;
+}
+
+.tags-view-wrapper .tags-view-item .el-icon-close {
+  width: 16px;
+  height: 16px;
+  vertical-align: 2px;
+  border-radius: 50%;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transform-origin: 100% 50%;
+}
+
+.tags-view-wrapper .tags-view-item .el-icon-close:before {
+  transform: scale(0.6);
+  display: inline-block;
+  vertical-align: -3px;
+}
+
+.tags-view-wrapper .tags-view-item .el-icon-close:hover {
+  background-color: #b4bccc;
+  color: #fff;
+}
+
+.c2-tab-container {
+  background-color: #fff;
+  height: 34px;
+  margin: -20px -20px 20px;
+}
+
+/* tabs样式 */
+
+/* 嵌入页面样式 */
+.iframe {
+  background-color: #fff;
+}
+
+/* 嵌入页面样式 */

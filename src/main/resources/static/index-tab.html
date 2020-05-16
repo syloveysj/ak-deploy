@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>C2-Vue</title>
+  <link rel="stylesheet" href="assets/css/element.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+</head>
+
+<body>
+  <div id="app">
+    <el-container>
+      <el-header class="page-header">
+        <a id="logo" href="/">
+          <img src="assets/images/logo.png" />
+          <span>C2 Vue UI</span>
+        </a>
+        <div class="header-user">
+          <el-avatar icon="el-icon-user-solid" size="medium"></el-avatar>
+          <el-dropdown @command="headerUserDropdownMenuCommand">
+            <span>{{loginInfo.realname}}<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item disabled icon="el-icon-s-tools">设置</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-error" command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </el-header>
+      <el-container class="page-container">
+        <el-aside id="menu-aside">
+          <c2-global-menu ref="c2menu" :menus="menus" />
+        </el-aside>
+        <el-container>
+          <el-main>
+            <div class="page-breadcrumb">
+              <c2-global-bread ref="c2bread" :home-deploy="homeDeploy||{}" />
+            </div>
+            <div class="c2-tab-container tags-view-container">
+              <c2-tab ref="c2tab" :home-deploy="homeDeploy||{}" />
+            </div>
+            <div id="view">
+              <keep-alive :include="c2IncludesNames">
+                <router-view :key="c2ActiveViewKey" />
+              </keep-alive>
+              <c2-iframe-component v-show="$route.path.startsWith('/i/')" />
+            </div>
+          </el-main>
+          <!-- <el-footer class="page-footer">Footer</el-footer> -->
+        </el-container>
+      </el-container>
+    </el-container>
+  </div>
+
+  <script src="assets/js/vue.min.js"></script>
+  <script src="assets/js/vue-router.js"></script>
+  <script src="assets/js/element.js"></script>
+  <script src="assets/js/moment.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+  <script src="c2tab.js"></script>
+  <script src="c2globalmenu.js"></script>
+  <script src="c2globalbread.js"></script>
+  <script src="c2IframeComponent.js"></script>
+  <script src="c2vue.js"></script>
+  <script src="ui/dir/components.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>
